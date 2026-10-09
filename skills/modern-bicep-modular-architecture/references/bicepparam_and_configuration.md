@@ -74,20 +74,30 @@ infra/
 └── modules/
 ```
 
-### Execution Example
+### Execution Example with Azure Deployment Stacks
+
+Deploy environment stacks with lifecycle governance and deny settings:
 
 ```bash
-# Deploy to Dev
-az deployment group create \
+# Deploy to Dev (Deployment Stack)
+az stack group create \
+  --name stack-billing-dev \
   --resource-group rg-billing-dev \
   --template-file main.bicep \
-  --parameters env/dev.bicepparam
+  --parameters env/dev.bicepparam \
+  --action-on-unmanage "deleteResources" \
+  --deny-settings-mode "denyWrite" \
+  --yes
 
-# Deploy to Prod
-az deployment group create \
+# Deploy to Prod (Deployment Stack with strict tamper protection)
+az stack group create \
+  --name stack-billing-prod \
   --resource-group rg-billing-prod \
   --template-file main.bicep \
-  --parameters env/prod.bicepparam
+  --parameters env/prod.bicepparam \
+  --action-on-unmanage "deleteResources" \
+  --deny-settings-mode "denyWriteAndDelete" \
+  --yes
 ```
 
 ---

@@ -61,7 +61,7 @@ Modern cloud applications should never use credentials or connection strings. Az
 ### Provisioning a User-Assigned Managed Identity
 
 ```bicep
-resource resIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+resource resIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' = {
   name: 'id-billing-worker-prod-01'
   location: resourceGroup().location
   tags: tags
@@ -75,7 +75,7 @@ output clientId string = resIdentity.properties.clientId
 ### Attaching to Compute Resources
 
 ```bicep
-resource resContainerApp 'Microsoft.App/containerApps@2024-03-01' = {
+resource resContainerApp 'Microsoft.App/containerApps@2025-01-01' = {
   name: 'ca-billing-worker'
   location: location
   identity: {

@@ -114,6 +114,14 @@ type SubnetDefinition = {
   addressPrefix: string
 }
 
+@description('Resource tagging taxonomy.')
+type ResourceTags = {
+  Environment: string
+  Workload: string
+  ManagedBy: string
+  *: string
+}
+
 // User-Defined Function for deterministic naming
 func formatName(prefix string, workload string, env string, service string) string =>
   toLower('${prefix}-${workload}-${env}-${service}')
@@ -137,7 +145,7 @@ param workloadName string
 param subnets SubnetDefinition[]
 
 @description('Resource tagging taxonomy.')
-param tags object = {
+param tags ResourceTags = {
   Environment: environment
   Workload: workloadName
   ManagedBy: 'Bicep'
@@ -150,7 +158,7 @@ var appEnvName = formatName(orgPrefix, workloadName, environment, 'cae')
 var appName = formatName(orgPrefix, workloadName, environment, 'app')
 
 // 1. User-Assigned Managed Identity
-resource resIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+resource resIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' = {
   name: identityName
   location: location
   tags: tags

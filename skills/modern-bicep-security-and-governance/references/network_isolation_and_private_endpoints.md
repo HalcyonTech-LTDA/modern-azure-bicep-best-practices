@@ -20,7 +20,7 @@ Exposing PaaS endpoints (e.g., `*.blob.core.windows.net`, `*.vaultcore.azure.net
 A Private Endpoint is provisioned via `Microsoft.Network/privateEndpoints`:
 
 ```bicep
-resource resPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-11-01' = {
+resource resPrivateEndpoint 'Microsoft.Network/privateEndpoints@2025-01-01' = {
   name: 'pe-${resourceName}'
   location: location
   tags: tags
@@ -52,7 +52,7 @@ Without a Private DNS Zone Group, DNS resolution will continue returning the pub
 Always declare the `privateDnsZoneGroups` child resource to automatically create the required DNS A-record upon endpoint creation:
 
 ```bicep
-resource resDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-11-01' = {
+resource resDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2025-01-01' = {
   parent: resPrivateEndpoint
   name: 'default'
   properties: {
@@ -75,7 +75,7 @@ resource resDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroup
 In modern Azure networking, subnets containing Private Endpoints must have network policies disabled for private endpoints to allow Network Security Groups (NSGs) to govern traffic:
 
 ```bicep
-resource resSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-11-01' = {
+resource resSubnet 'Microsoft.Network/virtualNetworks/subnets@2025-01-01' = {
   parent: resVnet
   name: 'snet-private-endpoints'
   properties: {

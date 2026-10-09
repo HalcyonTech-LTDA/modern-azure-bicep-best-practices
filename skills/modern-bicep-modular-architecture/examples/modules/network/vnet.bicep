@@ -1,5 +1,4 @@
 @description('Virtual Network module with declarative subnets and Network Security Group.')
-
 metadata name = 'Virtual Network Module'
 metadata description = 'Provisions an Azure Virtual Network with associated subnets and NSGs.'
 
@@ -9,6 +8,11 @@ type SubnetDefinition = {
   name: string
   @description('CIDR address range.')
   addressPrefix: string
+}
+
+@description('Resource tagging taxonomy.')
+type ResourceTags = {
+  *: string
 }
 
 @description('Azure region for deployment.')
@@ -24,10 +28,10 @@ param addressPrefix string = '10.0.0.0/16'
 param subnets SubnetDefinition[]
 
 @description('Resource tags.')
-param tags object = {}
+param tags ResourceTags = {}
 
 // Network Security Group for subnets
-resource resNsg 'Microsoft.Network/networkSecurityGroups@2023-11-01' = {
+resource resNsg 'Microsoft.Network/networkSecurityGroups@2025-01-01' = {
   name: 'nsg-${vnetName}'
   location: location
   tags: tags
@@ -51,7 +55,7 @@ resource resNsg 'Microsoft.Network/networkSecurityGroups@2023-11-01' = {
 }
 
 // Virtual Network
-resource resVnet 'Microsoft.Network/virtualNetworks@2023-11-01' = {
+resource resVnet 'Microsoft.Network/virtualNetworks@2025-01-01' = {
   name: vnetName
   location: location
   tags: tags
@@ -79,6 +83,4 @@ resource resVnet 'Microsoft.Network/virtualNetworks@2023-11-01' = {
 output vnetId string = resVnet.id
 
 @description('Resource IDs of the created subnets.')
-output subnetIds string[] = [
-  for (subnet, i) in subnets: resVnet.properties.subnets[i].id
-]
+output subnetIds string[] = [for (subnet, i) in subnets: resVnet.properties.subnets[i].id]

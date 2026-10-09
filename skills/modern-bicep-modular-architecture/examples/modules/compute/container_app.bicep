@@ -1,5 +1,4 @@
 @description('Container App Environment and Container App module with Managed Identity.')
-
 metadata name = 'Container App Module'
 metadata description = 'Provisions a managed Container App environment and secure container application.'
 
@@ -19,13 +18,18 @@ param subnetId string
 param userAssignedIdentityId string
 
 @description('Container image to deploy.')
-param containerImage string = 'mcr.microsoft.com/azuredocs/aci-helloworld:latest'
+param containerImage string = 'mcr.microsoft.com/azuredocs/aci-helloworld:v1'
+
+@description('Resource tagging taxonomy.')
+type ResourceTags = {
+  *: string
+}
 
 @description('Resource tags.')
-param tags object = {}
+param tags ResourceTags = {}
 
 // Container App Managed Environment
-resource resEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' = {
+resource resEnvironment 'Microsoft.App/managedEnvironments@2025-01-01' = {
   name: environmentName
   location: location
   tags: tags
@@ -44,7 +48,7 @@ resource resEnvironment 'Microsoft.App/managedEnvironments@2024-03-01' = {
 }
 
 // Container App with User-Assigned Identity
-resource resApp 'Microsoft.App/containerApps@2024-03-01' = {
+resource resApp 'Microsoft.App/containerApps@2025-01-01' = {
   name: appName
   location: location
   tags: tags

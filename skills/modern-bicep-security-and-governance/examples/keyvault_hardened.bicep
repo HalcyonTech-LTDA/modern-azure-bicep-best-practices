@@ -16,14 +16,19 @@ param privateDnsZoneId string
 @description('Principal ID of the workload identity granted Secrets User access.')
 param workloadPrincipalId string
 
+@description('Resource tagging taxonomy.')
+type ResourceTags = {
+  *: string
+}
+
 @description('Resource tags.')
-param tags object = {}
+param tags ResourceTags = {}
 
 // Key Vault Secrets User built-in role GUID
 var keyVaultSecretsUserRoleId = '4633458b-17de-408a-b874-0445c86b69e6'
 
 // 1. Hardened Key Vault
-resource resKeyVault 'Microsoft.KeyVault/vaults@2023-07-01' = {
+resource resKeyVault 'Microsoft.KeyVault/vaults@2024-11-01' = {
   name: keyVaultName
   location: location
   tags: tags
@@ -57,7 +62,7 @@ resource resRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
 }
 
 // 3. Private Endpoint
-resource resPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-11-01' = {
+resource resPrivateEndpoint 'Microsoft.Network/privateEndpoints@2025-01-01' = {
   name: 'pe-${keyVaultName}'
   location: location
   tags: tags
@@ -80,7 +85,7 @@ resource resPrivateEndpoint 'Microsoft.Network/privateEndpoints@2023-11-01' = {
 }
 
 // 4. Private DNS Zone Group Integration
-resource resDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2023-11-01' = {
+resource resDnsZoneGroup 'Microsoft.Network/privateEndpoints/privateDnsZoneGroups@2025-01-01' = {
   parent: resPrivateEndpoint
   name: 'default'
   properties: {

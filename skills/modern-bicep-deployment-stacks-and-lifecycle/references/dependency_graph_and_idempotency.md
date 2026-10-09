@@ -13,9 +13,9 @@ Unlike imperative scripts (Bash, PowerShell, Python), Bicep is purely **declarat
 When a resource references another resource's properties, Bicep automatically registers an implicit dependency:
 
 ```bicep
-resource resSubnet 'Microsoft.Network/virtualNetworks/subnets@2023-11-01' = { ... }
+resource resSubnet 'Microsoft.Network/virtualNetworks/subnets@2025-01-01' = { ... }
 
-resource resNic 'Microsoft.Network/networkInterfaces@2023-11-01' = {
+resource resNic 'Microsoft.Network/networkInterfaces@2025-01-01' = {
   // Implicit dependency: resNic depends on resSubnet automatically!
   properties: {
     ipConfigurations: [

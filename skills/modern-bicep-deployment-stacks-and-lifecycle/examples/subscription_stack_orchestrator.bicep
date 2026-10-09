@@ -17,8 +17,16 @@ param environment string
 @description('Workload name.')
 param workloadName string
 
+@description('Resource tagging taxonomy.')
+type ResourceTags = {
+  Environment: string
+  Workload: string
+  ManagedBy: string
+  *: string
+}
+
 @description('Resource tags.')
-param tags object = {
+param tags ResourceTags = {
   Environment: environment
   Workload: workloadName
   ManagedBy: 'DeploymentStack'
@@ -28,14 +36,14 @@ var coreRgName = 'rg-${workloadName}-core-${environment}'
 var appRgName = 'rg-${workloadName}-app-${environment}'
 
 // 1. Core Shared Resource Group
-resource resCoreRg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+resource resCoreRg 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: coreRgName
   location: location
   tags: tags
 }
 
 // 2. Application Resource Group
-resource resAppRg 'Microsoft.Resources/resourceGroups@2023-07-01' = {
+resource resAppRg 'Microsoft.Resources/resourceGroups@2024-11-01' = {
   name: appRgName
   location: location
   tags: tags

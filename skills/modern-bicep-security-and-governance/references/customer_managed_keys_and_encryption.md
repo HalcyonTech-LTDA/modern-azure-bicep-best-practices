@@ -18,7 +18,7 @@ Azure provides default encryption at rest using platform-managed keys (Microsoft
 ## 2. Key Vault Key with Automated Rotation
 
 ```bicep
-resource resKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-07-01' = {
+resource resKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2024-11-01' = {
   parent: resKeyVault
   name: 'cmk-storage-encryption'
   properties: {
@@ -48,7 +48,7 @@ resource resKeyVaultKey 'Microsoft.KeyVault/vaults/keys@2023-07-01' = {
 ## 3. Storage Account CMK with User-Assigned Identity
 
 ```bicep
-resource resStorageAccount 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+resource resStorageAccount 'Microsoft.Storage/storageAccounts@2025-01-01' = {
   name: storageAccountName
   location: location
   sku: {

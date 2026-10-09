@@ -12,21 +12,26 @@ param storageAccountName string
 @description('Name of the User-Assigned Managed Identity.')
 param identityName string
 
+@description('Resource tagging taxonomy.')
+type ResourceTags = {
+  *: string
+}
+
 @description('Resource tags.')
-param tags object = {}
+param tags ResourceTags = {}
 
 // Built-in Storage Blob Data Contributor role definition ID
 var storageBlobDataContributorRoleId = 'ba92f5b4-2d11-453d-a403-e96b0029c9fe'
 
 // 1. User-Assigned Managed Identity
-resource resIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2023-01-31' = {
+resource resIdentity 'Microsoft.ManagedIdentity/userAssignedIdentities@2024-11-30' = {
   name: identityName
   location: location
   tags: tags
 }
 
 // 2. Storage Account with Modern Security Hardening
-resource resStorage 'Microsoft.Storage/storageAccounts@2023-05-01' = {
+resource resStorage 'Microsoft.Storage/storageAccounts@2025-01-01' = {
   name: storageAccountName
   location: location
   tags: tags
@@ -52,7 +57,10 @@ resource resRoleAssignment 'Microsoft.Authorization/roleAssignments@2022-04-01' 
   name: guid(resStorage.id, resIdentity.id, storageBlobDataContributorRoleId)
   scope: resStorage
   properties: {
-    roleDefinitionId: subscriptionResourceId('Microsoft.Authorization/roleDefinitions', storageBlobDataContributorRoleId)
+    roleDefinitionId: subscriptionResourceId(
+      'Microsoft.Authorization/roleDefinitions',
+      storageBlobDataContributorRoleId
+    )
     principalId: resIdentity.properties.principalId
     principalType: 'ServicePrincipal'
   }

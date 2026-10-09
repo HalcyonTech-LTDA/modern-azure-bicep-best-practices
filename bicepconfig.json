@@ -1,0 +1,55 @@
+{
+  "analyzers": {
+    "core": {
+      "enabled": true,
+      "verbose": true,
+      "rules": {
+        "no-hardcoded-env-urls": {
+          "level": "error"
+        },
+        "secure-parameter-default": {
+          "level": "error"
+        },
+        "no-unused-params": {
+          "level": "error"
+        },
+        "no-unused-vars": {
+          "level": "error"
+        },
+        "use-resource-id-functions": {
+          "level": "error"
+        },
+        "protect-secrets-in-params": {
+          "level": "error"
+        },
+        "use-recent-api-versions": {
+          "level": "warning"
+        },
+        "simplify-interpolation": {
+          "level": "warning"
+        },
+        "adminusername-should-not-be-literal": {
+          "level": "error"
+        },
+        "max-params": {
+          "level": "warning"
+        },
+        "max-outputs": {
+          "level": "warning"
+        }
+      }
+    }
+  },
+  "moduleAliases": {
+    "br": {
+      "public": {
+        "registry": "mcr.microsoft.com",
+        "modulePath": "bicep"
+      }
+    }
+  },
+  "formatting": {
+    "indentSize": 2,
+    "insertFinalNewline": true
+  }
+}

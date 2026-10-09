@@ -132,10 +132,14 @@ jobs:
       - name: "What-If Analysis"
         id: whatif
         run: |
-          OUTPUT=$(az deployment group what-if \
+          OUTPUT=$(az stack group create \
+            --name stack-billing-prod \
             --resource-group rg-billing-prod \
             --template-file infra/main.bicep \
             --parameters infra/main.bicepparam \
+            --action-on-unmanage "deleteResources" \
+            --deny-settings-mode "denyWriteAndDelete" \
+            --what-if \
             --no-pretty-print)
           echo "whatif_output<<EOF" >> $GITHUB_OUTPUT
           echo "$OUTPUT" >> $GITHUB_OUTPUT

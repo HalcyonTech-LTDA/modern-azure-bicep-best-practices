@@ -125,6 +125,7 @@ modern-azure-bicep-best-practices/
 ├── .gitignore
 ├── LICENSE
 ├── README.md
+├── bicepconfig.json
 ├── plugin.json
 ├── rules/
 │   └── AGENTS.md
@@ -161,7 +162,8 @@ modern-azure-bicep-best-practices/
     │   ├── SKILL.md
     │   ├── examples/
     │   │   ├── deployment-stack-workflow.sh
-    │   │   └── subscription_stack_orchestrator.bicep
+    │   │   ├── subscription_stack_orchestrator.bicep
+    │   │   └── subscription_stack_orchestrator.bicepparam
     │   ├── references/
     │   │   ├── action_on_unmanage_and_cleanup.md
     │   │   ├── dependency_graph_and_idempotency.md

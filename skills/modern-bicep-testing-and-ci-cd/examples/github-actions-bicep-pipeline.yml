@@ -1,0 +1,109 @@
+name: "Azure Bicep Multi-Gate CI/CD"
+
+on:
+  pull_request:
+    branches:
+      - main
+    paths:
+      - "infra/**"
+  push:
+    branches:
+      - main
+    paths:
+      - "infra/**"
+
+permissions:
+  id-token: write
+  contents: read
+  pull-requests: write
+
+env:
+  AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID }}
+  AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+  AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID }}
+  RESOURCE_GROUP: "rg-workload-prod"
+  STACK_NAME: "stack-workload-prod"
+
+jobs:
+  validate:
+    name: "1. Lint & Static Analysis"
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+
+      - name: "Azure Login via OIDC"
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: "Bicep Build & Lint"
+        run: |
+          az bicep build --file infra/main.bicep
+
+      - name: "Run PSRule for Azure (WAF Compliance)"
+        uses: microsoft/ps-rule@v2.9.0
+        with:
+          modules: "PSRule.Rules.Azure"
+          inputType: "repository"
+          outputFormat: "Sarif"
+          outputPath: "reports/ps-rule-results.sarif"
+
+      - name: "Pre-Flight What-If Preview"
+        id: whatif
+        run: |
+          WHATIF_OUTPUT=$(az stack group create \
+            --name "${{ env.STACK_NAME }}" \
+            --resource-group "${{ env.RESOURCE_GROUP }}" \
+            --template-file infra/main.bicep \
+            --parameters infra/main.bicepparam \
+            --action-on-unmanage "deleteResources" \
+            --deny-settings-mode "denyWriteAndDelete" \
+            --what-if \
+            --no-pretty-print)
+          echo "whatif<<EOF" >> $GITHUB_OUTPUT
+          echo "$WHATIF_OUTPUT" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+      - name: "Comment What-If on Pull Request"
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const output = `### 🔍 Bicep What-If Deployment Preview\n\`\`\`text\n${{ steps.whatif.outputs.whatif }}\n\`\`\``;
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: output
+            });
+
+  deploy:
+    name: "2. Deploy & Enforce Stacks"
+    needs: validate
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: "Checkout Code"
+        uses: actions/checkout@v4
+
+      - name: "Azure Login via OIDC"
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: "Apply Deployment Stack with Deny Assignments"
+        run: |
+          az stack group create \
+            --name "${{ env.STACK_NAME }}" \
+            --resource-group "${{ env.RESOURCE_GROUP }}" \
+            --template-file infra/main.bicep \
+            --parameters infra/main.bicepparam \
+            --action-on-unmanage "deleteResources" \
+            --deny-settings-mode "denyWriteAndDelete" \
+            --yes

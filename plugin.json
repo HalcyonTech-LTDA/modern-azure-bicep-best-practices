@@ -1,0 +1,5 @@
+{
+  "name": "modern-azure-bicep-best-practices",
+  "description": "Professional modern Azure Bicep engineering best practices covering modular architecture & Azure Verified Modules (AVM), User-Defined Types (UDT) and .bicepparam parameter files, zero-secrets security & Managed Identity RBAC, Azure Deployment Stacks lifecycle & drift governance, multi-gate CI/CD with OIDC, PSRule/linter validation, and mandatory living README.md runbook documentation discipline.",
+  "version": "1.0.0"
+}

@@ -1,0 +1,91 @@
+# Azure DevOps Multi-Stage Pipeline for Azure Bicep Infrastructure
+# Uses Workload Identity Federation (OIDC) - Zero stored credentials
+
+trigger:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - infra/**
+
+pr:
+  branches:
+    include:
+      - main
+  paths:
+    include:
+      - infra/**
+
+variables:
+  azureServiceConnection: 'sc-azure-workload-federated'
+  resourceGroup: 'rg-workload-prod'
+  stackName: 'stack-workload-prod'
+
+stages:
+  - stage: Validate
+    displayName: '1. Validation & What-If'
+    jobs:
+      - job: LintAndPreview
+        displayName: 'Lint, PSRule & What-If'
+        pool:
+          vmImage: 'ubuntu-latest'
+        steps:
+          - checkout: self
+
+          - task: AzureCLI@2
+            displayName: 'Bicep Format & Build'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az bicep build --file infra/main.bicep
+
+          - task: AzureCLI@2
+            displayName: 'Pre-flight What-If Preview'
+            inputs:
+              azureSubscription: $(azureServiceConnection)
+              scriptType: 'bash'
+              scriptLocation: 'inlineScript'
+              inlineScript: |
+                az stack group create \
+                  --name $(stackName) \
+                  --resource-group $(resourceGroup) \
+                  --template-file infra/main.bicep \
+                  --parameters infra/main.bicepparam \
+                  --action-on-unmanage "deleteResources" \
+                  --deny-settings-mode "denyWriteAndDelete" \
+                  --what-if
+
+  - stage: Deploy
+    displayName: '2. Production Deployment Stack'
+    dependsOn: Validate
+    condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/main'))
+    jobs:
+      - deployment: ApplyStack
+        displayName: 'Apply Deployment Stack'
+        pool:
+          vmImage: 'ubuntu-latest'
+        environment: 'production'
+        strategy:
+          runOnce:
+            deploy:
+              steps:
+                - checkout: self
+
+                - task: AzureCLI@2
+                  displayName: 'Deploy Stack with Deny Assignments'
+                  inputs:
+                    azureSubscription: $(azureServiceConnection)
+                    scriptType: 'bash'
+                    scriptLocation: 'inlineScript'
+                    inlineScript: |
+                      az stack group create \
+                        --name $(stackName) \
+                        --resource-group $(resourceGroup) \
+                        --template-file infra/main.bicep \
+                        --parameters infra/main.bicepparam \
+                        --action-on-unmanage "deleteResources" \
+                        --deny-settings-mode "denyWriteAndDelete" \
+                        --yes

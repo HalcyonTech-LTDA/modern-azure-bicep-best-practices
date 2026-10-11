@@ -42,7 +42,7 @@ This plugin establishes modern, production-grade engineering standards for Azure
 
 ## What's Included
 
-### 1. Automatic Guardrails (`rules/AGENTS.md`)
+### 1. Automatic Guardrails (`rules/modern-azure-bicep-engineering.md`)
 Automatically enforced across all projects utilizing Azure Bicep:
 - **Mandatory `.bicepparam` over Deprecated JSON Parameters**: Absolute ban on `.parameters.json` for new projects; mandate `.bicepparam` with `using 'main.bicep'`.
 - **Strict Compile-Time Typing with User-Defined Types (UDT)**: Ban on untyped `object` parameters for complex contracts. Mandate `type` declarations with tagged unions, nullable markers, and `@sealed()` decorators.
@@ -128,7 +128,7 @@ modern-azure-bicep-best-practices/
 ├── bicepconfig.json
 ├── plugin.json
 ├── rules/
-│   └── AGENTS.md
+│   └── modern-azure-bicep-engineering.md
 └── skills/
     ├── modern-bicep-modular-architecture/
     │   ├── SKILL.md

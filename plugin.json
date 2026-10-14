@@ -1,5 +1,5 @@
 {
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "modern-azure-bicep-best-practices",
-  "description": "Professional modern Azure Bicep engineering best practices covering modular architecture & Azure Verified Modules (AVM), User-Defined Types (UDT) and .bicepparam parameter files, zero-secrets security & Managed Identity RBAC, Azure Deployment Stacks lifecycle & drift governance, multi-gate CI/CD with OIDC, PSRule/linter validation, and mandatory living README.md runbook documentation discipline."
+  "description": "Professional modern Azure Bicep engineering best practices covering modular architecture & AVM, User-Defined Types (UDT) and .bicepparam parameter files, zero-secrets security & Managed Identity RBAC, Container Apps & Jobs microservice topologies, Cosmos DB MongoDB API autoscale throughput governance, API Management external VNet & XML policies (rate limiting, Entra ID JWT, RFC 6648 idempotency), Azure Monitor Workbooks & FinOps telemetry, Azure Deployment Stacks lifecycle & drift governance, multi-gate CI/CD with OIDC, PSRule/linter validation, and mandatory living README.md runbook documentation discipline."
 }

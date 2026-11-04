@@ -1,10 +1,15 @@
 <div align="center">
 
+<a href="https://www.halcyontech.com.br/" target="_blank" rel="noopener noreferrer">
+  <img src="assets/halcyon-horizontal-cor.svg" alt="Halcyon Tech" height="60">
+</a>
+
 # Modern Azure Bicep Best Practices Plugin
 ### Enterprise Infrastructure as Code Engineering & Azure Architecture Standards
 
 [![Antigravity Plugin](https://img.shields.io/badge/Antigravity-Plugin%20v1.0.0-4F46E5.svg)](https://antigravity.google)
 [![License: MIT](https://img.shields.io/badge/License-MIT-10B981.svg)](./LICENSE)
+[![Website](https://img.shields.io/badge/Website-halcyontech.com.br-008080.svg)](https://www.halcyontech.com.br/)
 [![Organization](https://img.shields.io/badge/Organization-HalcyonTech--LTDA-black.svg)](https://github.com/HalcyonTech-LTDA)
 
 <p align="center">
@@ -92,7 +97,8 @@ modern-azure-bicep-best-practices/
 ├── .gitattributes           # Deterministic line endings (* text=auto eol=lf)
 ├── README.md                # Golden Standard documentation & runbook
 ├── assets/
-│   └── logo.svg             # Official Halcyon Tech corporate vector symbol
+│   ├── logo.svg             # Antigravity marketplace square icon
+│   └── halcyon-horizontal-cor.svg # Official Halcyon Tech brand logo (white background)             # Official Halcyon Tech corporate vector symbol
 ├── rules/                   # Contextual rules discovered automatically
 │   └── modern-azure-bicep-engineering.md
 ├── skills/                  # Actionable procedural skills (Progressive Disclosure)
@@ -129,4 +135,4 @@ modern-azure-bicep-best-practices/
 ## 📄 License & Corporate Governance
 
 Distributed under the **MIT License**. Copyright (c) 2026 **HalcyonTech LTDA**.  
-Engineered with precision and excellence by [Halcyon Tech](https://github.com/HalcyonTech-LTDA).
+Engineered with precision and excellence by [Halcyon Tech](https://www.halcyontech.com.br/) &mdash; [GitHub Organization](https://github.com/HalcyonTech-LTDA).

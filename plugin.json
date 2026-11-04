@@ -1,5 +1,20 @@
 {
   "$schema": "https://antigravity.google/schemas/v1/plugin.json",
   "name": "modern-azure-bicep-best-practices",
-  "description": "Professional modern Azure Bicep engineering best practices covering modular architecture & AVM, User-Defined Types (UDT) and .bicepparam parameter files, zero-secrets security & Managed Identity RBAC, Container Apps & Jobs microservice topologies, Cosmos DB MongoDB API autoscale throughput governance, API Management external VNet & XML policies (rate limiting, Entra ID JWT, RFC 6648 idempotency), Azure Monitor Workbooks & FinOps telemetry, Azure Deployment Stacks lifecycle & drift governance, multi-gate CI/CD with OIDC, PSRule/linter validation, and mandatory living README.md runbook documentation discipline."
+  "description": "Professional modern Azure Bicep engineering best practices covering modular architecture & AVM, User-Defined Types (UDT) and .bicepparam parameter files, zero-secrets security & Managed Identity RBAC, Container Apps & Jobs microservice topologies, Cosmos DB MongoDB API autoscale throughput governance, API Management external VNet & XML policies (rate limiting, Entra ID JWT, RFC 6648 idempotency), Azure Monitor Workbooks & FinOps telemetry, Azure Deployment Stacks lifecycle & drift governance, multi-gate CI/CD with OIDC, PSRule/linter validation, and mandatory living README.md runbook documentation discipline.",
+  "displayName": "Modern Azure Bicep Best Practices",
+  "version": "1.0.0",
+  "author": {
+    "name": "Halcyon Tech",
+    "url": "https://github.com/HalcyonTech-LTDA"
+  },
+  "homepage": "https://github.com/HalcyonTech-LTDA/modern-azure-bicep-best-practices",
+  "repository": "https://github.com/HalcyonTech-LTDA/modern-azure-bicep-best-practices",
+  "license": "MIT",
+  "logo": "assets/logo.svg",
+  "suggestedPrompts": [
+    "Refactor this Azure Bicep module to follow modern IaC conventions",
+    "Validate security parameters, tagging, and resource naming in Bicep",
+    "Generate automated deployment and parameter files for Azure Bicep"
+  ]
 }

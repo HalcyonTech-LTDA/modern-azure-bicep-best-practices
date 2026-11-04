@@ -5,3 +5,4 @@ bin/
 out/
 armsandbox/
 result.json
+installed_version.json
